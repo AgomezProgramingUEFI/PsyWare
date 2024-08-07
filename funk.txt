@@ -1,0 +1,74 @@
+<?php
+
+class Conexion {
+    private $host;
+    private $usuario;
+    private $contraseña;
+    private $nombreBasedeDatos;
+    public $conexion;
+
+    public function __construct() {
+        $this->host = "localhost";
+        $this->usuario = "root";
+        $this->contraseña = "";
+        $this->nombreBasedeDatos = "usuarios";
+
+        $this->conexion = mysqli_connect(
+            $this->host,
+            $this->usuario,
+            $this->contraseña,
+            $this->nombreBasedeDatos
+        );
+
+        if (!$this->conexion) {
+            die("La conexión ha fallado: " . mysqli_connect_error());
+        }
+    }
+}
+
+class Registration {
+    private $conexion;
+
+    public function __construct() {
+        $db = new Conexion();
+        $this->conexion = $db->conexion;
+    }
+
+    public function registrarse($nombreCompleto, $nombreUsuario, $correoElectronico, $contraseña, $confirmContraseña) {
+        if ($contraseña !== $confirmContraseña) {
+            return 100; // Contraseñas no coinciden
+        }
+
+        $consulta = "SELECT * FROM datos_usuario WHERE usuario = '$nombreUsuario' OR correo_electronico = '$correoElectronico'";
+        $usuarioExistente = mysqli_query($this->conexion, $consulta);
+
+        if (mysqli_num_rows($usuarioExistente) > 0) {
+            return 1; // Usuario o correo electrónico ya existe
+        } else {
+            $contraseñaHash = password_hash($contraseña, PASSWORD_BCRYPT);
+            $consultaSqlRegistration = "INSERT INTO datos_usuario (nombre_completo, correo_electronico, usuario, contraseña) VALUES ('$nombreCompleto', '$correoElectronico', '$nombreUsuario', '$contraseñaHash')";
+
+            if (mysqli_query($this->conexion, $consultaSqlRegistration)) {
+                return 10; // Registro exitoso
+            } else {
+                return 0; // Error en el registro
+            }
+        }
+    }
+}
+
+class Select {
+    private $conexion;
+
+    public function __construct() {
+        $db = new Conexion();
+        $this->conexion = $db->conexion;
+    }
+
+    public function SelectuserByUser($id) {
+        $consulta = "SELECT * FROM datos_usuario WHERE id = '$id'";
+        $resultado = mysqli_query($this->conexion, $consulta);
+        return mysqli_fetch_assoc($resultado);
+    }
+}
+?>

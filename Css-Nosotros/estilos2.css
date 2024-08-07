@@ -1,0 +1,29 @@
+.container-padre:hover .item {-webkit-transform:scale(1.1);transform:scale(1.1);}
+.container-padre {overflow:hidden;}
+
+.container-padre:hover .item1 {-webkit-transform:scale(1.1);transform:scale(1.1);}
+.container-padre {overflow:hidden;}
+
+.container-padre:hover .item2 {-webkit-transform:scale(1.1);transform:scale(1.1);}
+.container-padre {overflow:hidden;}
+
+.container-padre:hover .item3 {-webkit-transform:scale(1.1);transform:scale(1.1);}
+.container-padre {overflow:hidden;}
+
+.container-padre:hover .item4 {-webkit-transform:scale(1.1);transform:scale(1.1);}
+.container-padre {overflow:hidden;}
+
+.item img:hover, .item1 img:hover, .item2 img:hover, .item3 img:hover, .item4 img:hover {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+
+
+@keyframes moveDown {
+    from {
+        transform: translateY(-10px); 
+    }
+    to {
+        transform: translateY(10px); 
+    }}
